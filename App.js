@@ -4,16 +4,38 @@ import * as Font from 'expo-font';
 import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import AppNavigator from './navigation/AppNavigator';
 import ApiKeys from './constants/ApiKeys';
 import * as firebase from 'firebase';
+import MainTabNavigator from './navigation/MainTabNavigator';
 
-import AppNavigator from './navigation/AppNavigator';
+//Iniziallize firebase...
+if (!firebase.apps.length){firebase.initializeApp(ApiKeys.FirebaseConfig);}
 
 export default function App(props) {
-  const [isLoadingComplete, setLoadingComplete] = useState(false);
-  if (!firebase.apps.length){firebase.initializeApp(ApiKeys.FirebaseConfig);}
 
-  if (!isLoadingComplete && !props.skipLoadingScreen) {
+  const [isLoadingComplete, setLoadingComplete] = useState(false);
+  const [isAuthenticationReady, setAuthenticationReady] = useState(false);
+  const [isAuthenticated, setAuthenticated] = useState(false);
+
+ /*  firebase.auth().onAuthStateChanged(
+    function(user) {
+      if (user) {
+        {console.log('This is user != null')}
+        setAuthenticationReady(isAuthenticationReady == true);
+        setAuthenticated(isAuthenticated == !!user);
+      }
+    }
+  );
+
+
+  onAuthStateChanged = (user) => {
+    setAuthenticationReady(isAuthenticationReady = true);
+    setAuthenticated(isAuthenticated = !!user);
+  }
+ */
+
+  if (!isLoadingComplete && !isAuthenticationReady && !props.skipLoadingScreen) {
     return (
       <AppLoading
         startAsync={loadResourcesAsync}
@@ -25,8 +47,10 @@ export default function App(props) {
     return (
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <AppNavigator />
+        {<AppNavigator/>}
       </View>
+        //{(isAuthenticated) ? <MainTabNavigator/> : <AppNavigator />}
+       //{navigation.navigate(isAuthenticated ? 'Main' : 'Login')}
     );
   }
 }
