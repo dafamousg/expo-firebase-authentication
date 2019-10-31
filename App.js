@@ -18,12 +18,12 @@ export default function App(props) {
   const [isAuthenticationReady, setAuthenticationReady] = useState(false);
   const [isAuthenticated, setAuthenticated] = useState(false);
 
- /*  firebase.auth().onAuthStateChanged(
+  firebase.auth().onAuthStateChanged(
     function(user) {
       if (user) {
         {console.log('This is user != null')}
-        setAuthenticationReady(isAuthenticationReady == true);
-        setAuthenticated(isAuthenticated == !!user);
+        setAuthenticationReady(true);
+        setAuthenticated(!!user);
       }
     }
   );
@@ -33,7 +33,6 @@ export default function App(props) {
     setAuthenticationReady(isAuthenticationReady = true);
     setAuthenticated(isAuthenticated = !!user);
   }
- */
 
   if (!isLoadingComplete && !isAuthenticationReady && !props.skipLoadingScreen) {
     return (
